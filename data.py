@@ -9,4 +9,5 @@ class Url:
 
 class WellKnownConstants:
     RANDOM_STRING_LEN = 5
+    mail_domain = "mytests.com"
 

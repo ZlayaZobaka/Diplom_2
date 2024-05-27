@@ -1,26 +1,42 @@
+import allure
 import helpers
+import pytest
+import requests
 
 
-class TestSmth:
+class TestAuthLogin:
 
-    # создать уникального пользователя;
-    def test_smth(self, api, register_user_payload, login_user_payload, delete_user):
-        r = api.register_user(register_user_payload)
-        print(r.status_code)
+    @allure.title('Тест успешного изменения данных пользователя')
+    @allure.description('Запрос изменения данных пользователя с авторизацией возвращает {"success":true}')
+    @pytest.mark.parametrize('field,value',
+                             [
+                                 ['email', helpers.generate_random_mail()],
+                                 ['name', helpers.generate_random_string()],
+                                 ['password', helpers.generate_random_string()]
+                             ])
+    def test_cgange_user_correct_data_successful(
+            self, api, register_user_payload, delete_user, field, value):
+        api.register_user(register_user_payload)
 
-    # создать пользователя, который уже зарегистрирован;
+        response = api.change_user({field: value})
 
+        assert (response.status_code == requests.codes['ok'] and
+                response.json()['success'] is True)
 
-    # создать пользователя и не заполнить одно из обязательных полей.
+    @allure.title('Тест изменения данных пользователя без авторизации')
+    @allure.description('Запрос изменения данных пользователя без авторизации возвращает {"success":true}')
+    @pytest.mark.parametrize('field,value',
+                             [
+                                 ['email', helpers.generate_random_mail()],
+                                 ['name', helpers.generate_random_string()],
+                                 ['password', helpers.generate_random_string()]
+                             ])
+    def test_cgange_user_correct_data_successful(
+            self, api, register_user_payload, delete_user, field, value):
+        api.register_user(register_user_payload)
 
+        response = api.change_user({field: value}, use_auth_token=False)
 
-    # логин под существующим пользователем,
+        assert (response.status_code == requests.codes['unauthorized'] and
+                response.json()['message'] == 'You should be authorised')
 
-
-    # логин с неверным логином и паролем.
-
-
-    # Изменение данных пользователя с авторизацией
-
-
-    # Изменение данных пользователя без авторизации Для обеих ситуаций нужно проверить, что любое поле можно изменить

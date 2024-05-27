@@ -11,6 +11,6 @@ def generate_random_string(length=WellKnownConstants.RANDOM_STRING_LEN):
 
 
 def generate_random_mail():
-    return Faker().email()
+    return Faker().email(domain=WellKnownConstants.mail_domain)
 
 

@@ -10,8 +10,8 @@ class Api:
         self.headers = {"Content-Type": "application/json"}
         self.headers_with_auth_token = {"Content-Type": "application/json"}
 
-    def get_headers(self, with_auth_token=True):
-        return self.headers_with_auth_token if with_auth_token else self.headers
+    def get_headers(self, use_auth_token=True):
+        return self.headers_with_auth_token if use_auth_token else self.headers
 
     @allure.step('Сохраняем accessToken-токен')
     def set_token(self, token):
@@ -36,6 +36,23 @@ class Api:
             headers=self.get_headers(False))
 
         self.set_token(response.json().get('accessToken'))
+
+        return response
+
+    @allure.step('Отправляем запрос на получение данных пользователя')
+    def get_user(self):
+        response = requests.get(
+            url=Url.BASE_URL + Url.AUTH_USER_ENDPOINT,
+            headers=self.get_headers())
+
+        return response
+
+    @allure.step('Отправляем запрос на изменение данных пользователя')
+    def change_user(self, payload, use_auth_token=True):
+        response = requests.patch(
+            url=Url.BASE_URL + Url.AUTH_USER_ENDPOINT,
+            data=json.dumps(payload),
+            headers=self.get_headers(use_auth_token))
 
         return response
 

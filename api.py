@@ -82,3 +82,11 @@ class Api:
             headers=self.get_headers(use_auth_token))
 
         return response
+
+    @allure.step('Отправляем запрос на получение заказов пользователя')
+    def get_user_orders(self, use_auth_token=True):
+        response = requests.get(
+            url=Url.BASE_URL + Url.ORDERS_ENDPOINT,
+            headers=self.get_headers(use_auth_token))
+
+        return response

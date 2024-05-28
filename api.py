@@ -10,6 +10,7 @@ class Api:
         self.headers = {"Content-Type": "application/json"}
         self.headers_with_auth_token = {"Content-Type": "application/json"}
 
+    @allure.step('Возвращаем заголовки для формирования запроса')
     def get_headers(self, use_auth_token=True):
         return self.headers_with_auth_token if use_auth_token else self.headers
 
@@ -17,7 +18,7 @@ class Api:
     def set_token(self, token):
         self.headers_with_auth_token['Authorization'] = token
 
-    @allure.step(f'Отправляем запрос на авторизацию пользователя')
+    @allure.step('Отправляем запрос на авторизацию пользователя')
     def register_user(self, payload):
         response = requests.post(
             url=Url.BASE_URL + Url.AUTH_REGISTER_ENDPOINT,
@@ -28,7 +29,7 @@ class Api:
 
         return response
 
-    @allure.step(f'Отправляем запрос на авторизацию пользователя')
+    @allure.step('Отправляем запрос на авторизацию пользователя')
     def login_user(self, payload):
         response = requests.post(
             url=Url.BASE_URL + Url.AUTH_LOGIN_ENDPOINT,
@@ -56,7 +57,7 @@ class Api:
 
         return response
 
-    @allure.step(f'Отправляем запрос на удаление пользователя')
+    @allure.step('Отправляем запрос на удаление пользователя')
     def delete_user(self, payload):
         response = requests.delete(
             url=Url.BASE_URL + Url.AUTH_USER_ENDPOINT,
@@ -65,10 +66,19 @@ class Api:
 
         return response
 
-    @allure.step(f'Отправляем запрос на получение данных об ингредиентах')
+    @allure.step('Отправляем запрос на получение данных об ингредиентах')
     def get_ingredients(self):
         response = requests.get(
             url=Url.BASE_URL + Url.INGREDIENTS_ENDPOINT,
             headers=self.get_headers(False))
+
+        return response
+
+    @allure.step('Отправляем запрос на создание заказа')
+    def create_order(self, payload, use_auth_token=True):
+        response = requests.post(
+            url=Url.BASE_URL + Url.ORDERS_ENDPOINT,
+            data=json.dumps(payload),
+            headers=self.get_headers(use_auth_token))
 
         return response

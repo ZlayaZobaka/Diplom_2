@@ -14,7 +14,7 @@ class TestAuthLogin:
                                  ['name', helpers.generate_random_string()],
                                  ['password', helpers.generate_random_string()]
                              ])
-    def test_cgange_user_correct_data_successful(
+    def test_change_user_correct_data_successful(
             self, api, register_user_payload, delete_user, field, value):
         api.register_user(register_user_payload)
 
@@ -24,14 +24,14 @@ class TestAuthLogin:
                 response.json()['success'] is True)
 
     @allure.title('Тест изменения данных пользователя без авторизации')
-    @allure.description('Запрос изменения данных пользователя без авторизации возвращает {"success":true}')
+    @allure.description('Запрос изменения данных пользователя без авторизации возвращает ошибку Unauthorized')
     @pytest.mark.parametrize('field,value',
                              [
                                  ['email', helpers.generate_random_mail()],
                                  ['name', helpers.generate_random_string()],
                                  ['password', helpers.generate_random_string()]
                              ])
-    def test_cgange_user_correct_data_successful(
+    def test_change_user_correct_data_successful(
             self, api, register_user_payload, delete_user, field, value):
         api.register_user(register_user_payload)
 

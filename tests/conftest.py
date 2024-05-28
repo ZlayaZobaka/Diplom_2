@@ -44,4 +44,4 @@ def delete_user(register_user_payload, api):
 @pytest.fixture(scope='function')
 def get_ingredients(api):
     response = api.get_ingredients()
-    return helpers.get_ingredients_ids(response.json())
+    return helpers.get_ingredients_ids(response.json()['data'])

@@ -11,6 +11,12 @@ def generate_random_string(length=WellKnownConstants.RANDOM_STRING_LEN):
 
 
 def generate_random_mail():
-    return Faker().email(domain=WellKnownConstants.mail_domain)
+    return Faker().email(domain=WellKnownConstants.MAIL_DOMAIN)
 
+
+def get_recipe(ids: list, count: int):
+    result = []
+    for _ in range(count):
+        result.append(ids[Faker().random_int(0, len(ids)) - 1])
+    return result
 

@@ -2,7 +2,7 @@ import allure
 import helpers
 import pytest
 import requests
-from data import WellKnownConstants
+from data import WellKnownConstants, ErrorMsg
 
 
 class TestOrders:
@@ -38,7 +38,7 @@ class TestOrders:
         response = api.create_order({'ingredients': []})
 
         assert (response.status_code == requests.codes['bad_request'] and
-                response.json()['message'] == 'Ingredient ids must be provided')
+                response.json()['message'] == ErrorMsg.EMPTY_INGREDIENT_LIST)
 
     @allure.title('Тест попытки создания заказа в котором один из ингредиентов с неверным id')
     @allure.description('Запрос создания заказа с неверным id ингредиента возвращает ошибку Bad Request')
@@ -51,7 +51,7 @@ class TestOrders:
         response = api.create_order({'ingredients': ids})
 
         assert (response.status_code == requests.codes['bad_request'] and
-                response.json()['message'] == 'One or more ids provided are incorrect')
+                response.json()['message'] == ErrorMsg.UNKNOWN_INGREDIENT_ID)
 
     @allure.title('Тест попытки получения списка заказов пользователя (без авторизации)')
     @allure.description('Запрос получения списка заказов пользователя без авторизации возвращает ошибку Unauthorized')
@@ -61,7 +61,7 @@ class TestOrders:
         response = api.get_user_orders(False)
 
         assert (response.status_code == requests.codes['unauthorized'] and
-                response.json()['message'] == 'You should be authorised')
+                response.json()['message'] == ErrorMsg.UNAUTHORIZED_USER)
 
     @allure.title('Тест успешного получения списка заказов пользователя (с авторизацией)')
     @allure.description('Успешный запрос создания заказа возвращает HTTP 200 и "success": true')

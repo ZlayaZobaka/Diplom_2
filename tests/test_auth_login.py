@@ -2,6 +2,7 @@ import allure
 import helpers
 import pytest
 import requests
+from data import ErrorMsg
 
 
 class TestAuthLogin:
@@ -26,4 +27,4 @@ class TestAuthLogin:
         response = api.login_user(login_user_payload)
 
         assert (response.status_code == requests.codes['unauthorized'] and
-                response.json()['message'] == 'email or password are incorrect')
+                response.json()['message'] == ErrorMsg.INCORRECT_PASSWORD)

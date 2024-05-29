@@ -2,6 +2,7 @@ import allure
 import helpers
 import pytest
 import requests
+from data import ErrorMsg
 
 
 class TestAuthLogin:
@@ -38,5 +39,5 @@ class TestAuthLogin:
         response = api.change_user({field: value}, use_auth_token=False)
 
         assert (response.status_code == requests.codes['unauthorized'] and
-                response.json()['message'] == 'You should be authorised')
+                response.json()['message'] == ErrorMsg.UNAUTHORIZED_USER)
 

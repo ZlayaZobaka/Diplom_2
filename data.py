@@ -13,3 +13,11 @@ class WellKnownConstants:
     ID_LEN = 24
     UNKNOWN_ID = '00c0c5a71d1f82001bdaaa70'
 
+class ErrorMsg:
+    EMPTY_INGREDIENT_LIST = 'Ingredient ids must be provided'
+    UNKNOWN_INGREDIENT_ID = 'One or more ids provided are incorrect'
+    UNAUTHORIZED_USER = 'You should be authorised'
+    INCORRECT_PASSWORD = 'email or password are incorrect'
+    USER_ALREADY_EXISTS = 'User already exists'
+    REQUIRED_FIELDS_ARE_NOT_FILLED = 'Email, password and name are required fields'
+

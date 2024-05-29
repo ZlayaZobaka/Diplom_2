@@ -1,6 +1,7 @@
 import allure
 import pytest
 import requests
+from data import ErrorMsg
 
 
 class TestAuthRegister:
@@ -20,7 +21,7 @@ class TestAuthRegister:
         response = api.register_user(register_user_payload)
 
         assert (response.status_code == requests.codes['forbidden'] and
-               response.json()['message'] == 'User already exists')
+               response.json()['message'] == ErrorMsg.USER_ALREADY_EXISTS)
 
     @allure.title('Тест создания пользователя, если отсутствует часть обязательных полей')
     @allure.description('Если одного из полей нет, запрос возвращает ошибку Bad Request')
@@ -31,4 +32,4 @@ class TestAuthRegister:
             response = api.register_user(register_user_payload)
 
         assert (response.status_code == requests.codes['forbidden'] and
-                response.json()['message'] == 'Email, password and name are required fields')
+                response.json()['message'] == ErrorMsg.REQUIRED_FIELDS_ARE_NOT_FILLED)

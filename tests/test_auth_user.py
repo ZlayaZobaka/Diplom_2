@@ -2,6 +2,7 @@ import allure
 import helpers
 import pytest
 import requests
+from api import Api
 from data import ErrorMsg
 
 
@@ -15,8 +16,8 @@ class TestAuthLogin:
                                  ['name', helpers.generate_random_string()],
                                  ['password', helpers.generate_random_string()]
                              ])
-    def test_change_user_correct_data_successful(
-            self, api, register_user_payload, delete_user, field, value):
+    def test_change_user_correct_data_successful(self, register_user_payload, field, value):
+        api = Api()
         api.register_user(register_user_payload)
 
         response = api.change_user({field: value})
@@ -32,11 +33,11 @@ class TestAuthLogin:
                                  ['name', helpers.generate_random_string()],
                                  ['password', helpers.generate_random_string()]
                              ])
-    def test_change_user_correct_data_successful(
-            self, api, register_user_payload, delete_user, field, value):
-        api.register_user(register_user_payload)
+    def test_change_user_without_authorization_return_unauthorized_error(
+            self, register_user_payload, field, value):
+        Api().register_user(register_user_payload)
 
-        response = api.change_user({field: value}, use_auth_token=False)
+        response = Api().change_user({field: value})
 
         assert (response.status_code == requests.codes['unauthorized'] and
                 response.json()['message'] == ErrorMsg.UNAUTHORIZED_USER)
